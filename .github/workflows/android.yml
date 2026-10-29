@@ -64,50 +64,13 @@ jobs:
             echo "ERROR: Godot editor settings file was not found"
             exit 1
           fi
-          echo "--- Current editor settings file (head) ---"
-          head -n 30 "$SETTINGS_FILE"
-          echo "--- Writing export/android/java_sdk_path into editor settings ---"
-          if ! command -v python3 >/dev/null 2>&1; then
-            echo "ERROR: python3 is required for this step but was not found"
-            exit 1
+          echo "--- Writing export/android/java_sdk_path into editor settings (.tres INI-style) ---"
+          NEW_LINE="export/android/java_sdk_path = \"$JDK_DIR\""
+          if grep -q '^export/android/java_sdk_path' "$SETTINGS_FILE"; then
+            sed -i "s|^export/android/java_sdk_path.*|$NEW_LINE|" "$SETTINGS_FILE"
+          else
+            printf '%s\n' "$NEW_LINE" >> "$SETTINGS_FILE"
           fi
-          python3 - "$SETTINGS_FILE" "$JDK_DIR" <<'PYEOF'
-          import re
-          import sys
-          import xml.etree.ElementTree as ET
-          path, jdk = sys.argv[1], sys.argv[2]
-          updated = False
-          try:
-              tree = ET.parse(path)
-              root = tree.getroot()
-              prop = None
-              for child in list(root):
-                  if child.tag == 'export/android/java_sdk_path':
-                      prop = child
-                      break
-              if prop is None:
-                  prop = ET.SubElement(root, 'export/android/java_sdk_path')
-                  prop.set('type', '4')
-              prop.text = jdk
-              tree.write(path, encoding='UTF-8', xml_declaration=True)
-              print('editor settings updated (XML)')
-              updated = True
-          except ET.ParseError:
-              print('settings file is not XML, trying INI-style update')
-          if not updated:
-              with open(path) as f:
-                  content = f.read()
-              new_line = 'export/android/java_sdk_path = "%s"' % jdk
-              if re.search(r'(?m)^export/android/java_sdk_path\s*=', content):
-                  content = re.sub(r'(?m)^export/android/java_sdk_path\s*=.*$', new_line, content)
-              else:
-                  if content and not content.endswith('\n'):
-                      content += '\n'
-                  content += new_line + '\n'
-              with open(path, 'w') as f:
-                  f.write(content)
-              print('editor settings updated (INI-style)')
-          PYEOF
           echo "--- Verification ---"
           grep -a "java_sdk_path" "$SETTINGS_FILE" || echo "WARNING: java_sdk_path not found in settings file"
 
