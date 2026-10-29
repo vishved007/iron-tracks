@@ -1,0 +1,118 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/Game.gd" id="1_game"]
+
+[node name="Game" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_game")
+
+[node name="HUD" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 20.0
+offset_top = 30.0
+offset_right = -20.0
+offset_bottom = 140.0
+grow_horizontal = 2
+
+[node name="TopRow" type="HBoxContainer" parent="HUD"]
+layout_mode = 2
+
+[node name="BtnMenu" type="Button" parent="HUD/TopRow"]
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "< MENU"
+
+[node name="LevelTitle" type="Label" parent="HUD/TopRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
+text = "Level 1: First Whistle"
+horizontal_alignment = 1
+
+[node name="BtnSound" type="Button" parent="HUD/TopRow"]
+custom_minimum_size = Vector2(80, 60)
+layout_mode = 2
+theme_override_font_sizes/font_size = 22
+text = "🔊"
+
+[node name="StatsRow" type="HBoxContainer" parent="HUD"]
+layout_mode = 2
+
+[node name="MovesLabel" type="Label" parent="HUD/StatsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "Moves: 0 (Par: 4)"
+
+[node name="TimerLabel" type="Label" parent="HUD/StatsRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 22
+text = "Time: 00:00"
+horizontal_alignment = 2
+
+[node name="BoardContainer" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -330.0
+offset_top = -300.0
+offset_right = 330.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TilesRoot" type="Node2D" parent="BoardContainer"]
+
+[node name="TrainsRoot" type="Node2D" parent="BoardContainer"]
+
+[node name="BottomHUD" type="HBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = -120.0
+offset_right = -20.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 15
+alignment = 1
+
+[node name="BtnUndo" type="Button" parent="BottomHUD"]
+custom_minimum_size = Vector2(130, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "↶ UNDO"
+
+[node name="BtnRestart" type="Button" parent="BottomHUD"]
+custom_minimum_size = Vector2(130, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "↺ RESTART"
+
+[node name="BtnHint" type="Button" parent="BottomHUD"]
+custom_minimum_size = Vector2(130, 80)
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "💡 HINT"
+
+[node name="BtnRun" type="Button" parent="BottomHUD"]
+custom_minimum_size = Vector2(180, 80)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 26
+text = "▶ RUN TRAIN"

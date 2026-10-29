@@ -1,0 +1,36 @@
+config_version=5
+
+[application]
+
+config/name="Iron Tracks"
+config/description="Original Train-Track Puzzle Game with 200 Levels"
+config/version="1.0.0"
+run/main_scene="res://scenes/Main.tscn"
+config/features=PackedStringArray("4.3", "Mobile")
+config/icon="res://assets/sprites/train_locomotive.png"
+
+[autoload]
+
+SaveManager="*res://scripts/SaveManager.gd"
+SoundManager="*res://scripts/SoundManager.gd"
+ThemeManager="*res://scripts/ThemeManager.gd"
+GameManager="*res://scripts/GameManager.gd"
+
+[display]
+
+window/size/viewport_width=720
+window/size/viewport_height=1280
+window/size/mode=0
+window/size/resizable=true
+window/handheld/orientation=1
+window/stretch/mode="canvas_items"
+window/stretch/aspect="keep"
+
+[input_devices]
+
+pointing/emulate_touch_from_mouse=true
+
+[rendering]
+
+renderer/rendering_method="mobile"
+textures/vram_compression/import_etc2_astc=true
