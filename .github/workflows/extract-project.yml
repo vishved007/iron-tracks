@@ -6,7 +6,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      workflows: write
     steps:
       - uses: actions/checkout@v4
       - name: Extract project files to repo root
@@ -21,8 +20,18 @@ jobs:
           echo "Extracting from: $SRC"
           ls -la "$SRC"
           shopt -s dotglob
-          cp -rf "$SRC"/* .
+          for f in "$SRC"/*; do
+            base=$(basename "$f")
+            if [ "$base" = ".github" ]; then
+              echo "Skipping .github (workflow files will be added via web UI)"
+              continue
+            fi
+            cp -rf "$f" .
+          done
           rm -f iron-tracks-project-fixed.zip
+          echo "===== android.yml content (for web UI commit) ====="
+          cat "$SRC/.github/workflows/android.yml"
+          echo "===== end android.yml ====="
       - name: Commit extracted files
         run: |
           git config user.name "github-actions[bot]"
